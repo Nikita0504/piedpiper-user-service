@@ -10,7 +10,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 val dataBaseModule = module {
     single<MongoClient> {
         KMongo.createClient(
-            connectionString = "mongodb://localhost:27017"
+            connectionString = Parameters().MONGODB,
         )
     }
 

@@ -41,3 +41,26 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
     implementation(libs.koin.ktor3)
 }
+
+ktor {
+    docker {
+        jreVersion.set(JavaVersion.VERSION_21)
+        localImageName.set("piedpiper-user-container")
+        imageTag.set("1.0")
+        portMappings.set(listOf(
+            io.ktor.plugin.features.DockerPortMapping(
+                80,
+                8081,
+                io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+            )
+        ))
+
+        externalRegistry.set(
+            io.ktor.plugin.features.DockerImageRegistry.dockerHub(
+                appName = provider { "piedpiper-user-container" },
+                username = providers.environmentVariable("DOCKER_HUB_USERNAME"),
+                password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
+            )
+        )
+    }
+}
